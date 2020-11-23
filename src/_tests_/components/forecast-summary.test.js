@@ -6,30 +6,30 @@ describe("ForecastSummary", () => {
 
     it('renders', () => {
         const { asFragment } = render(
-            <ForecastSummary 
-            date="mockDate" 
-            temperature="mockTemperature" 
-            description="mockDescription"
-            icon="mockIcon" 
-            />
-        ); 
-    
-        expect(asFragment()).toMatchSnapshot();
-    });
-
-    it("renders the date, temp, description and icon props", () => {
-        const { getByText } = render(
             <ForecastSummary
-            date="mockDate" 
-            temperature="mockTemperature" 
-            description="mockDescription"
-            icon="mockIcon" 
+                date={1525046400000}
+                temperature={30}
+                description='testDesc'
+                icon='800'
             />
-        );
+        )
 
-        expect(getByText("mockDate")).toHaveClass("date");
-        expect(getByText("mockTemperature")).toHaveClass("temperature");
-        expect(getByText("mockDescription")).toHaveClass("description");
-        expect(getByText("mockIcon")).toHaveClass("icon");
-    });
-});
+        expect(asFragment()).toMatchSnapshot();
+    })
+
+    it('renders a number of props into a weather summary', () => {
+        const { getByText, getByTestId } = render(
+            <ForecastSummary
+                date={1525046400000}
+                temperature={9}
+                description='Clear'
+                icon='800'
+            />
+        )
+
+        expect(getByText('April 30th, 2018')).toBeTruthy();
+        expect(getByText('April 30th, 2018')).toHaveClass('forecast-summary-date');
+        expect(getByTestId('temperature-id')).toHaveClass('temperature');
+        expect(getByText('Clear')).toHaveClass('description');
+    })
+})
