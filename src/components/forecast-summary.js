@@ -6,7 +6,7 @@ import advancedFormat from "dayjs/plugin/advancedFormat"
 
 dayjs.extend(advancedFormat)
 
-const ForecastSummary =  (props)  => {
+const ForecastSummary = props => { //pulls in all props set in parent (app)
     return (
         <div className="forecast-summary">
             <span className="forecast-summary-date" data-testid='date-id'>{dayjs(props.date).format('MMMM Do, YYYY')}</span><br></br>

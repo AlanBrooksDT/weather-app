@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
 import PropTypes from 'prop-types';
 import LocationDetails from './location-details';
 import ForecastSummaries from './forecast-summaries';
@@ -6,31 +7,50 @@ import ForecastDetails from './forecast-details';
 
 import '../styles/app.css';
 
-const App = props => {
+const App = () => {
 
     const [forecasts, setForecasts] = useState([]);
+    const [selectedDate, setSelectedDate] = useState([]);
+    const [location, setLocation] = useState({
+        city: "Manchester",
+        country: "",
+    });
 
-    const [selectedDate, setSelectedDate] = useState(props.forecasts[0].date);
+    useEffect(() => {
+        const getLocation = async () => {
+            await axios
+            .get("https://weather-app-alt.herokuapp.com/forecast?city=London")
+            .then(response => {
+                setForecasts(response.data.forecasts);
+                setLocation(response.data.location);
+            })
+            .catch(err => console.log(err))
+        };
+        getLocation();
+    }, []);
 
-    const selectedForecast = props.forecasts.find(forecast => forecast.date === selectedDate);
+    console.log(forecasts);
 
-    const handleForecastSelect = (date) => {
+    //const selectedForecast = forecasts.find(forecast => forecast.date === selectedDate);
+
+   /* const handleForecastSelect = (date) => {
         setSelectedDate(date);
-    }
+    }*/
 
     return (
 
     <div className="forecast">
         <LocationDetails
-            city={props.location.city}
-            country={props.location.country}
+            city={location.city} //creating prop from prop of location.city created in parent (index)
+            country={location.country}
         />
 
         <ForecastSummaries 
-            forecasts={props.forecasts} 
-            onForecastSelect={handleForecastSelect} /> <br></br>
+            forecasts={forecasts} 
+            // onForecastSelect={handleForecastSelect} 
+            /> <br></br>
             
-        <ForecastDetails forecast={selectedForecast} />
+        
     </div>
     );  
 };

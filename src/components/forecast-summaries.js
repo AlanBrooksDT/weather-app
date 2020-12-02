@@ -4,17 +4,17 @@ import PropTypes from 'prop-types'
 
 import '../styles/forecast-summaries.css';
 
-const ForecastSummaries = props => (
+const ForecastSummaries = ({ forecasts, onForecastSelect }) => ( //pulls in explicit props, forecasts and onForecastSelect from parent (app)
     <div className="forecast-summaries">
         {
-            props.forecasts.map(forecast => (
+            forecasts.map(forecast => (
                 <ForecastSummary
                   key={forecast.date}
                   date={forecast.date}
                   description={forecast.description}
                   icon={forecast.icon}
                   temperature={forecast.temperature.max}
-                  onSelect={props.onForecastSelect}
+                  // onSelect={onForecastSelect}
                 />
             ))
         }
